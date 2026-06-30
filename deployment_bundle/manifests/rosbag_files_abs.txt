@@ -1,0 +1,4 @@
+/home/czb/fast_livo2_validation_bags/01_raw_sensor_inputs/site_nav_20260624_170718/metadata.yaml
+/home/czb/fast_livo2_validation_bags/01_raw_sensor_inputs/site_nav_20260624_170718/site_nav_20260624_170718_0.db3
+/home/czb/fast_livo2_validation_bags/01_raw_sensor_inputs/site_nav_20260624_172258/metadata.yaml
+/home/czb/fast_livo2_validation_bags/01_raw_sensor_inputs/site_nav_20260624_172258/site_nav_20260624_172258_0.db3

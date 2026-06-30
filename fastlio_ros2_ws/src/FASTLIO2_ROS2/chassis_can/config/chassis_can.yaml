@@ -1,0 +1,192 @@
+chassis_can_node:
+  ros__parameters:
+    # =========================
+    # CAN 基本配置
+    # =========================
+    # Linux SocketCAN 网口名。当前你的 USB-CAN 设备是 can0。
+    # 启动前先执行：ros2 run chassis_can setup_can.sh can0 100000
+    interface: "can0"
+
+    # 小车CAN.pdf（2026-06-24 最新协议）中定义：
+    #   下发标准帧 ID: 0x01
+    #   上报标准帧 ID: 0x02
+    # 下发仍为 5 字节：
+    #   byte0 功能位，byte1-2 数据，byte3-4 MODBUS CRC 高/低位。
+    # 小板上报为 8 字节固定布局。按实测样例：
+    #   00 5C = 0x005C = 92 度
+    #   01 13 = 0x0113 = 275 度
+    # 因此反馈数据按高字节在前、低字节在后解析：
+    #   value = 高字节 * 256 + 低字节。
+    #   byte0-1 左电机角度
+    #   byte2-3 右电机角度
+    #   byte4-5 左电机速度
+    #   byte6-7 右电机速度
+    # 大板上报为 5 字节：
+    #   byte0 功能位，byte1-2 数据，byte3-4 MODBUS CRC 高/低位。
+    command_can_id: 0x01
+    feedback_can_id: 0x02
+
+    # 功能位定义。
+    mode_function: 0x00
+    enable_function: 0x01
+    forward_function: 0x02
+    turn_function: 0x03
+    # 兼容旧参数名；新协议中 0x02=前进，0x03=左右，不再表示左右电机。
+    right_motor_function: 0x02
+    left_motor_function: 0x03
+    light_function: 0x04
+    pump_function: 0x05
+    fan_function: 0x06
+    pump_fan_enable_function: 0x07
+    motor_query_function: 0x08
+
+    # =========================
+    # 安全与自动收发
+    # =========================
+    # true 时只接收不发送，调试时最安全。
+    listen_only: true
+
+    # 启动节点后是否自动下发模式切换和总电源指令。
+    # mode_data：0=遥控，1=上位机。
+    # enable_data：新协议范围为 282 或 1722，默认 1722 作为开启值。
+    # enable_crc=-1 表示按 MODBUS_CRC16(功能位+数据高位+数据低位) 自动计算。
+    enable_on_start: false
+    send_mode_on_enable: true
+    mode_data: 1
+    enable_data: 1722
+    enable_crc: -1
+
+    # 启动节点后是否周期读取轮速/角度。
+    # read_crc=-1 表示按 MODBUS_CRC16(功能位+数据高位+数据低位) 自动计算。
+    query_on_start: false
+    query_period_s: 1.0
+    read_data: 0
+    read_crc: -1
+    command_crc_mode: "modbus"
+
+    # 兼容之前命令行测试参数，正常使用优先改 read_data/read_crc。
+    query_data: 0
+    query_crc: -1
+
+    # =========================
+    # 底盘尺寸参数，必须按实车测量
+    # =========================
+    # wheel_base：左右轮/左右履带中心距，单位 m。
+    # 差速底盘角速度换算公式会用到它：
+    #   angular_z = (右侧线速度 - 左侧线速度) / wheel_base
+    # 实测轴距 80 cm，因此 wheel_base=0.80。
+    wheel_base: 0.80
+
+    # wheel_radius：驱动轮半径，单位 m。
+    # 线速度换算公式会用到它：
+    #   驱动轮线速度 = drive_wheel_rpm / 60 * 2 * pi * wheel_radius
+    # 实测轮直径 44 cm，因此 wheel_radius=0.22。
+    wheel_radius: 0.22
+
+    # gear_ratio：电机到驱动轮的减速比。
+    # 定义为：电机转速 / 驱动轮转速。
+    # 例如电机转 20 圈驱动轮转 1 圈，则 gear_ratio=20.0。
+    # 暂时未知时使用 1.0，后续按实际减速箱/链轮/同步带比例修改。
+    gear_ratio: 1.0
+
+    # speed_scale：协议转速原始值到电机 rpm 的比例。
+    # 定义为：motor_rpm = 协议转速值 * speed_scale。
+    # 如果协议里 DATA1=800 就代表电机 800 rpm，则 speed_scale=1.0。
+    # 如果协议值需要乘 0.1 才是 rpm，则 speed_scale=0.1。
+    speed_scale: 1.0
+
+    # max_motor_rpm：限制 /cmd_vel 换算出的左右轮目标转速，避免误发过大速度。
+    max_motor_rpm: 1200.0
+
+    # left_sign/right_sign：左右电机正负方向。
+    # 车体前进为正方向。若发布正线速度时某一侧实际反转，或里程计方向相反，
+    # 将对应符号从 1.0 改为 -1.0。
+    left_sign: 1.0
+    right_sign: 1.0
+
+    # feedback_angle_scale_to_rad：
+    # 控制器上报 DATA2 到弧度的比例。若 DATA2 是角度 degree，使用 pi/180 = 0.01745329252。
+    # 当前里程计优先用轮速积分，角度先保留发布和后续校验。
+    feedback_angle_scale_to_rad: 0.01745329252
+
+    # =========================
+    # 速度下发 /cmd_vel
+    # =========================
+    cmd_vel_topic: "/cmd_vel"
+    cmd_vel_timeout_s: 0.5
+    send_zero_on_cmd_timeout: true
+
+    # 新协议的运动控制不是左右轮分别下发，而是：
+    #   0x02 前进/后退，数据范围 282-1002-1722，1002 为中位。
+    #   0x03 左右转向，数据范围 282-1002-1722，1002 为中位。
+    # command_control_mode=forward_turn 时，/cmd_vel 会映射到 0x02/0x03。
+    # 下面两个比例只是临时默认值，后续需要实车标定：
+    #   forward_data = 1002 + linear.x  * forward_value_per_mps
+    #   turn_data    = 1002 + angular.z * turn_value_per_radps
+    command_control_mode: "forward_turn"
+    control_min_value: 282
+    control_neutral_value: 1002
+    control_max_value: 1722
+    forward_value_per_mps: 720.0
+    turn_value_per_radps: 720.0
+    forward_cmd_sign: 1.0
+    turn_cmd_sign: 1.0
+
+    # 旧左右电机模式保留为兼容参数，正常新协议不使用。
+    motor_command_crc_mode: "modbus"
+    motor_command_crc: 0
+    known_right_800_crc: 0x7340
+
+    # =========================
+    # 里程计输出
+    # =========================
+    odom_topic: "/odom"
+    wheel_odom_twist_topic: "/wheel_odom_twist"
+    odom_frame_id: "odom"
+    base_frame_id: "base_link"
+    publish_odom_tf: false
+    odom_rate_hz: 50.0
+
+    # =========================
+    # 调试
+    # =========================
+    log_all_frames: true
+    # feedback_byte_order：
+    # big 表示上传数据高字节在前、低字节在后：
+    #   value = byte0 * 256 + byte1
+    feedback_byte_order: "big"
+
+    # feedback_signed：
+    # true 表示速度按 int16_t 解析，支持负数速度。
+    feedback_signed: true
+
+    # feedback_angle_signed：
+    # false 表示角度按 uint16 解析，适合 0-360 度角度值。
+    feedback_angle_signed: false
+
+    # feedback_crc_enabled：
+    # true 时，CAN 反馈帧必须通过 CRC 检查才会进入速度/里程计计算。
+    # 小板 8 字节上报不带 CRC，因此默认关闭反馈 CRC。
+    # 大板 5 字节上报会在日志中显示 CRC 是否匹配。
+    # 下发命令仍使用 MODBUS CRC，不受这个参数影响。
+    feedback_crc_enabled: false
+
+    # feedback_crc_mode：
+    # modbus：使用你给出的 MODBUS_CRC16，计算内容为 byte0..byte4，
+    #   并与 byte5..byte6 的 CRC 高位/低位比较。
+    # sum16/modbus0/ccitt_false/ccitt0：其它预置算法模式，仅用于排查。
+    # none/off：关闭 CRC 校验，不建议长期使用。
+    feedback_crc_mode: "modbus"
+
+    # feedback_parse_mode：
+    # small_board：新协议小板 8 字节固定布局，且每组数据高字节在前：
+    #   byte0-1 左角度，byte2-3 右角度，byte4-5 左速度，byte6-7 右速度。
+    # function_split：旧协议兼容模式，byte0 是功能位，byte1-2 为速度，byte3-4 为角度。
+    # combined_speed：如果后续实测发现一个 8 字节帧里同时包含左右速度，
+    #   则改成 combined_speed，并按实际字节位置改下面两个 offset。
+    feedback_parse_mode: "small_board"
+
+    # combined_speed 是旧备用解析模式，新协议 small_board 不使用下面两个 offset。
+    # 新协议固定为：byte0-3 是角度，byte4-7 是速度。
+    combined_left_speed_offset: 0
+    combined_right_speed_offset: 2

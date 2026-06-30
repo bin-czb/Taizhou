@@ -1,0 +1,41 @@
+imu_topic: /imu/data
+lidar_topic: /livox/lidar
+body_frame: body
+world_frame: map
+imu_acc_scale: 1.0
+# 实验配置：把 /imu/data 时间戳向后补偿 53.331 ms。
+# 代码执行 imu_timestamp -= imu_time_lag_to_lidar_s，因此这里填 -0.053331。
+imu_time_lag_to_lidar_s: -0.053331
+print_time_cost: false
+
+lidar_filter_num: 6
+lidar_min_range: 0.3
+lidar_max_range: 30.0
+scan_resolution: 0.15
+map_resolution: 0.3
+
+cube_len: 300
+det_range: 60
+move_thresh: 1.5
+
+na: 0.01
+ng: 0.01
+nba: 0.0001
+nbg: 0.0001
+
+imu_init_num: 20
+near_search_num: 5
+ieskf_max_iter: 5
+
+gravity_align: true
+esti_il: false
+
+# First-pass LiDAR -> external IMU transform:
+# p_imu = r_il * p_lidar + t_il
+# Source: /home/czb/Tai Zhou/fast_livo2_ros2_ws/calibration/recommended_lidar_imu_extrinsic_20260622.yaml
+r_il: [0.009167, -0.999957, 0.001393,
+       0.999900,  0.009182, 0.010762,
+      -0.010774,  0.001294, 0.999941]
+t_il: [0.0, 0.0, 0.08]
+
+lidar_cov_inv: 1000.0

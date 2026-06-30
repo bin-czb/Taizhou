@@ -1,0 +1,26 @@
+# Local repository metadata and agent files
+.git/
+.agents/
+.codex/
+
+# ROS/colcon generated files
+build/
+build_clean/
+install/
+install_clean/
+log/
+log_clean/
+
+# Python generated files
+__pycache__/
+*.py[cod]
+
+# Large release archives and bag exports
+release_archives/
+*.bag
+*.db3
+*.mcap
+*.tar
+*.tar.*
+*.zst
+*.zip.part*
