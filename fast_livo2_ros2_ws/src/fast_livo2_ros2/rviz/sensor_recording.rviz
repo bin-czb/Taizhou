@@ -1,0 +1,71 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+  - Class: rviz_common/Views
+    Name: Views
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Name: Grid
+      Enabled: true
+      Alpha: 0.5
+      Cell Size: 1
+      Color: 160; 160; 164
+      Line Style:
+        Value: Lines
+        Line Width: 0.03
+      Plane: XY
+      Plane Cell Count: 40
+      Value: true
+    - Class: rviz_default_plugins/TF
+      Name: TF
+      Enabled: true
+      Frame Timeout: 15
+      Show Arrows: true
+      Show Axes: true
+      Show Names: true
+      Value: true
+    - Class: rviz_default_plugins/Image
+      Name: Left Camera Image
+      Enabled: true
+      Topic: /left_camera/image
+      Max Value: 1
+      Median window: 5
+      Min Value: 0
+      Normalize Range: true
+      Value: true
+  Enabled: true
+  Global Options:
+    Background Color: 48; 48; 48
+    Fixed Frame: base_link
+    Frame Rate: 30
+  Name: root
+  Tools:
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Select
+    - Class: rviz_default_plugins/FocusCamera
+    - Class: rviz_default_plugins/Measure
+    - Class: rviz_default_plugins/PublishPoint
+      Topic: /clicked_point
+  Transformation:
+    Current:
+      Class: rviz_default_plugins/TF
+  Value: true
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 8
+      Focal Point:
+        X: 0
+        Y: 0
+        Z: 0
+      Name: Current View
+      Pitch: 0.75
+      Target Frame: <Fixed Frame>
+      Value: Orbit (rviz)
+      Yaw: 2.35
+    Saved: ~
+Window Geometry:
+  Height: 900
+  Width: 1400

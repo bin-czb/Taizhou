@@ -1,0 +1,68 @@
+# Official HKU-MARS LiDAR_IMU_Init run on the recorded LiDAR-IMU bag.
+# Date: 2026-06-21
+#
+# Input:
+#   ROS2 bag:
+#     /home/czb/fast_livo2_validation_bags/lidar_imu_init_20260621_165848
+#   Converted ROS1 bag:
+#     /home/czb/Tai Zhou/fast_livo2_ros2_ws/converted_bags_ros1/lidar_imu_init_20260621_165848_ros1.bag
+#
+# Notes:
+#   - The recorded Livox Mid-360 topic is sensor_msgs/PointCloud2 from livox_ros_driver2,
+#     not the ROS1 livox_ros_driver/CustomMsg expected by upstream LI-Init.
+#   - A local compatibility adapter was added in third_party/LiDAR_IMU_Init to convert
+#     the PointCloud2 timestamp field from absolute nanoseconds to per-frame offset time.
+#   - IMU rate reported by LI-Init was about 50 Hz. Upstream LI-Init warns that >150 Hz
+#     is recommended, so this result should be treated as a candidate, not final truth.
+#   - The initialization result matches the mechanical yaw relationship much better than
+#     the refinement result. Do not blindly overwrite the hand-measured config with the
+#     refinement result without a projection/odometry validation.
+
+source: official_hku_mars_li_init_docker_noetic
+ros2_bag: /home/czb/fast_livo2_validation_bags/lidar_imu_init_20260621_165848
+ros1_bag: /home/czb/Tai Zhou/fast_livo2_ros2_ws/converted_bags_ros1/lidar_imu_init_20260621_165848_ros1.bag
+upstream_result_file: /home/czb/Tai Zhou/fast_livo2_ros2_ws/third_party/LiDAR_IMU_Init/result/Initialization_result.txt
+
+imu_rate_hz_observed: 50.05
+imu_rate_warning: upstream_recommends_higher_than_150_hz
+
+transform_convention:
+  name: lidar_to_imu
+  equation: p_imu = R_LI * p_lidar + T_LI
+
+initialization_result:
+  recommended_for_first_validation: true
+  rotation_lidar_to_imu_deg: [-0.544328, 1.426489, 89.727943]
+  translation_lidar_to_imu_m: [0.038440, -0.010987, 0.103455]
+  time_lag_imu_to_lidar_s: -0.056553
+  gyro_bias_radps: [-0.037150, -0.146455, 0.050414]
+  accel_bias_mps2: [0.009857, -0.009794, 0.010340]
+  gravity_world_mps2: [-0.471921, 0.308291, -9.793791]
+  T_lidar_to_imu:
+    - [0.004862, -0.999944, -0.009378, 0.038440]
+    - [0.999678, 0.004627, 0.024937, -0.010987]
+    - [-0.024893, -0.009497, 0.999645, 0.103455]
+    - [0.0, 0.0, 0.0, 1.0]
+
+refinement_result:
+  recommended_for_first_validation: false
+  caution: deviates_from_mechanical_measurement_and_parallel_mount_assumption
+  rotation_lidar_to_imu_deg: [16.695436, -3.531580, 84.385875]
+  translation_lidar_to_imu_m: [0.062504, 0.037654, 0.214610]
+  time_lag_imu_to_lidar_s: -0.056553
+  gyro_bias_radps: [-0.014814, 0.541772, -0.003514]
+  accel_bias_mps2: [0.115294, -0.035223, 0.108743]
+  gravity_world_mps2: [-0.418357, 0.388528, -9.718548]
+  T_lidar_to_imu:
+    - [0.097750, -0.954980, 0.280105, 0.062504]
+    - [0.993303, 0.076200, -0.086848, 0.037654]
+    - [0.061594, 0.286718, 0.956033, 0.214610]
+    - [0.0, 0.0, 0.0, 1.0]
+
+mechanical_prior:
+  description: IMU y axis forward, IMU x axis camera-right, IMU below LiDAR by about 0.08 m.
+  expected_rotation_lidar_to_imu_matrix:
+    - [0.0, -1.0, 0.0]
+    - [1.0, 0.0, 0.0]
+    - [0.0, 0.0, 1.0]
+  expected_translation_lidar_to_imu_m: [0.0, 0.0, 0.08]

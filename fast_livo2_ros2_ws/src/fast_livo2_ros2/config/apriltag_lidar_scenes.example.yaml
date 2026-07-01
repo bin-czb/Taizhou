@@ -1,0 +1,34 @@
+scenes:
+  - name: scene_01
+    T_camera_board:
+      rotation: [1.0, 0.0, 0.0,
+                 0.0, 1.0, 0.0,
+                 0.0, 0.0, 1.0]
+      translation: [0.0, 0.0, 2.0]
+    T_lidar_board:
+      rotation: [1.0, 0.0, 0.0,
+                 0.0, 1.0, 0.0,
+                 0.0, 0.0, 1.0]
+      translation: [0.05, 0.0, 2.0]
+  - name: scene_02
+    T_camera_board:
+      rotation: [1.0, 0.0, 0.0,
+                 0.0, 1.0, 0.0,
+                 0.0, 0.0, 1.0]
+      translation: [0.0, 0.1, 3.0]
+    T_lidar_board:
+      rotation: [1.0, 0.0, 0.0,
+                 0.0, 1.0, 0.0,
+                 0.0, 0.0, 1.0]
+      translation: [0.05, 0.1, 3.0]
+  - name: scene_03
+    T_camera_board:
+      rotation: [1.0, 0.0, 0.0,
+                 0.0, 1.0, 0.0,
+                 0.0, 0.0, 1.0]
+      translation: [0.0, -0.1, 4.0]
+    T_lidar_board:
+      rotation: [1.0, 0.0, 0.0,
+                 0.0, 1.0, 0.0,
+                 0.0, 0.0, 1.0]
+      translation: [0.05, -0.1, 4.0]

@@ -1,0 +1,39 @@
+method: static_imu_analysis
+imu_topic: /imu/data
+samples: 3001
+duration_s: 60.000238
+rate_hz: 50.0
+accel_mean_mps2:
+- 0.29392
+- 0.697593
+- 9.806409
+accel_std_mps2:
+- 0.002805
+- 0.007876
+- 0.00321
+accel_norm_mean_mps2: 9.835586
+accel_norm_std_mps2: 0.003095
+accel_norm_error_mps2: 0.028936
+gyro_mean_radps:
+- -0.00127
+- 0.024715
+- 0.000208
+gyro_std_radps:
+- 0.005275
+- 0.002758
+- 0.000719
+gyro_mean_degps:
+- -0.07277
+- 1.416093
+- 0.011918
+gyro_std_degps:
+- 0.302207
+- 0.158027
+- 0.041209
+gravity_axis:
+  axis: z
+  sign: 1.0
+notes:
+- Keep the IMU completely static while collecting this file.
+- gyro_mean_radps is a useful static gyro bias estimate.
+- accel_norm_mean_mps2 should be close to 9.80665 for a normal external IMU.

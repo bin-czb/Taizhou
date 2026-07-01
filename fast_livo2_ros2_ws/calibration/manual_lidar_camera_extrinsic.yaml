@@ -1,0 +1,29 @@
+method: manual_measurement
+date: "2026-06-20"
+transform_convention: "LiDAR -> Camera: p_camera = Rcl * p_lidar + Pcl"
+coordinate_assumption:
+  lidar_frame:
+    x: "front"
+    y: "left"
+    z: "up"
+  camera_optical_frame:
+    x: "right"
+    y: "down"
+    z: "front"
+mount_measurement:
+  camera_relative_to_lidar:
+    right_m: 0.0
+    down_m: 0.06
+    front_m: 0.065
+  lidar_origin_in_camera_frame_m:
+    x: 0.0
+    y: -0.06
+    z: -0.065
+extrin_calib:
+  Rcl: [0.0, -1.0, 0.0,
+        0.0, 0.0, -1.0,
+        1.0, 0.0, 0.0]
+  Pcl: [0.0, -0.06, -0.065]
+notes:
+  - "Manual initial value for dataset recording and coarse validation."
+  - "Use calibrated LiDAR-camera extrinsic before high-accuracy LIVO operation."

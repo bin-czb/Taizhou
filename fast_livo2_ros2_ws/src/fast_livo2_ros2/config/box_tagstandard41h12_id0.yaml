@@ -1,0 +1,24 @@
+name: "cardboard_box_tagstandard41h12_id0"
+units: "m"
+tag:
+  family: "tagStandard41h12"
+  id: 0
+  # Black outer square side length.
+  size_m: 0.100
+box_face:
+  width_m: 0.341
+  height_m: 0.233
+tag_offsets:
+  left_m: 0.1225
+  right_m: 0.1220
+  top_m: 0.0675
+  bottom_m: 0.0650
+consistency_check:
+  width_from_offsets_m: 0.3445
+  width_error_m: 0.0035
+  height_from_offsets_m: 0.2325
+  height_error_m: -0.0005
+notes:
+  - "Measurements provided on 2026-06-19."
+  - "The width consistency error is about 3.5 mm; remeasure box width or left/right offsets before final calibration if possible."
+  - "LiDAR uses the box face as a plane; the tag pattern is only used by the camera."

@@ -1,0 +1,292 @@
+method: multi_plane_apriltag_lidar
+transform_convention: 'LiDAR -> Camera: p_camera = Rcl * p_lidar + Pcl'
+board:
+  name: cardboard_box_tagstandard41h12_id0
+  units: m
+  tag:
+    family: tagStandard41h12
+    id: 0
+    size_m: 0.1
+  box_face:
+    width_m: 0.346
+    height_m: 0.233
+  tag_offsets:
+    left_m: 0.1225
+    right_m: 0.122
+    top_m: 0.0675
+    bottom_m: 0.065
+  consistency_check:
+    width_from_offsets_m: 0.3445
+    width_error_m: 0.0035
+    height_from_offsets_m: 0.2325
+    height_error_m: -0.0005
+  notes:
+  - Measurements provided on 2026-06-19.
+  - The width consistency error is about 3.5 mm; remeasure box width or left/right
+    offsets before final calibration if possible.
+  - LiDAR uses the box face as a plane; the tag pattern is only used by the camera.
+scenes:
+- name: scene_01
+  image_stamp: 1781880816.4332783
+  cloud_stamp: 1781880816.561409
+  camera_plane:
+    normal:
+    - -0.003581353396384439
+    - 0.012038957012642966
+    - -0.9999211155995746
+    distance: 0.9091190154275657
+    centroid:
+    - -0.0361113206380286
+    - 0.03591005026860917
+    - 0.9097524276546772
+    inliers: 4
+    total: 4
+  lidar_plane:
+    normal:
+    - 0.15410069707422508
+    - 0.14922462969489428
+    - 0.9767215493955581
+    distance: 0.0006101215176284175
+    centroid:
+    - -0.05497427232458089
+    - -0.07379124313931831
+    - 0.019322726228993233
+    inliers: 4431
+    total: 20928
+- name: scene_02
+  image_stamp: 1781880823.4355974
+  cloud_stamp: 1781880823.3620746
+  camera_plane:
+    normal:
+    - 0.3469584204995504
+    - -0.04652213720163463
+    - -0.9367259712395346
+    distance: 0.8367177070104406
+    centroid:
+    - 0.05170885329862128
+    - 0.08993827659790438
+    - 0.9079223106281613
+    inliers: 4
+    total: 4
+  lidar_plane:
+    normal:
+    - 0.03199027722077471
+    - -0.04887784685227601
+    - -0.998292331058605
+    distance: 0.0007255839632219171
+    centroid:
+    - 0.07360068268184303
+    - 0.03363944454460193
+    - 0.0014383227663214112
+    inliers: 4102
+    total: 20064
+- name: scene_03
+  image_stamp: 1781880832.3286347
+  cloud_stamp: 1781880832.563313
+  camera_plane:
+    normal:
+    - 0.007379120698627158
+    - -0.5270511206559637
+    - -0.8498015443578624
+    distance: 0.822737955146032
+    centroid:
+    - -0.04924729405238855
+    - 0.060633570388063246
+    - 0.9301201762277366
+    inliers: 4
+    total: 4
+  lidar_plane:
+    normal:
+    - -0.03332240753471952
+    - -0.07032302196418713
+    - -0.996967546983308
+    distance: 0.0009893400286421876
+    centroid:
+    - 0.0407696196613692
+    - 0.03847574453817401
+    - -0.0030842854316575036
+    inliers: 5339
+    total: 18588
+- name: scene_04
+  image_stamp: 1781880841.2226973
+  cloud_stamp: 1781880841.2613268
+  camera_plane:
+    normal:
+    - -0.45173712579844955
+    - -0.06667598810678037
+    - -0.8896560468997782
+    distance: 0.7187634564573223
+    centroid:
+    - -0.055903141162798084
+    - 0.10798517712055211
+    - 0.8282042986742217
+    inliers: 4
+    total: 4
+  lidar_plane:
+    normal:
+    - 0.04676895090786466
+    - -0.10325646027445472
+    - -0.9935546128132906
+    distance: 0.0010257686461549896
+    centroid:
+    - 0.054229567381508574
+    - 0.01255348558256978
+    - 0.0022804988333728735
+    inliers: 6656
+    total: 20064
+- name: scene_05
+  image_stamp: 1781880848.9183724
+  cloud_stamp: 1781880848.8630826
+  camera_plane:
+    normal:
+    - 0.009421524940671729
+    - 0.2989934080942328
+    - -0.9542086652216002
+    distance: 0.7696562291531073
+    centroid:
+    - -0.020661337627688115
+    - 0.118331999913687
+    - 0.8434654652808335
+    inliers: 4
+    total: 4
+  lidar_plane:
+    normal:
+    - -0.9322853562589458
+    - -0.0038378820588700893
+    - -0.36170331096968494
+    distance: 1.0867022574056806
+    centroid:
+    - 0.9749741697736625
+    - 0.5250369004842792
+    - 0.48584870849879225
+    inliers: 4065
+    total: 19968
+- name: scene_06
+  image_stamp: 1781880856.7166288
+  cloud_stamp: 1781880856.5630796
+  camera_plane:
+    normal:
+    - 0.5193042427043625
+    - 0.1889205077202025
+    - -0.833445946220863
+    distance: 0.5902794405520043
+    centroid:
+    - 0.16185852280254295
+    - 0.06126493593065006
+    - 0.8229777396756627
+    inliers: 4
+    total: 4
+  lidar_plane:
+    normal:
+    - -0.8226458154291977
+    - -0.5003133303901682
+    - -0.27007486701048056
+    distance: 0.9887190450582408
+    centroid:
+    - 0.6034080314321839
+    - 0.7414671848528338
+    - 0.4493644214984708
+    inliers: 4632
+    total: 20640
+- name: scene_07
+  image_stamp: 1781880867.411765
+  cloud_stamp: 1781880868.7651799
+  camera_plane:
+    normal:
+    - 0.338698113209271
+    - 0.15633230909623483
+    - -0.9278166829935315
+    distance: 0.8243362298073036
+    centroid:
+    - -0.16878930640217565
+    - 0.18771903178864996
+    - 0.8584822567858131
+    inliers: 4
+    total: 4
+  lidar_plane:
+    normal:
+    - -0.924364277525637
+    - -0.3629498138559764
+    - -0.11755047875878338
+    distance: 1.1670224052255782
+    centroid:
+    - 0.8903903226883476
+    - 0.7674987588722835
+    - 0.5564746898631323
+    inliers: 4030
+    total: 20064
+- name: scene_08
+  image_stamp: 1781880876.3074179
+  cloud_stamp: 1781880876.2622821
+  camera_plane:
+    normal:
+    - -0.2682923585839129
+    - 0.10376423304710679
+    - -0.9577328407576023
+    distance: 0.8565895527744907
+    centroid:
+    - -0.1267273802266169
+    - 0.031784491038363706
+    - 0.9333371435200448
+    inliers: 4
+    total: 4
+  lidar_plane:
+    normal:
+    - -0.004069478927540863
+    - -0.06617318234645568
+    - -0.9977998543191922
+    distance: 0.0003710138579037089
+    centroid:
+    - 0.03643706689132654
+    - 0.10523652832334868
+    - -0.0067559661058883965
+    inliers: 5196
+    total: 19968
+extrin_calib:
+  Rcl:
+  - -0.8358168786715711
+  - 0.4106633303496595
+  - 0.3643703808404828
+  - -0.25542205839697774
+  - -0.8783548130470769
+  - 0.40404504016419424
+  - 0.4859729595481244
+  - 0.24463943161959953
+  - 0.8390362513532276
+  Pcl:
+  - 0.7879183953835517
+  - 1.375241284541495
+  - 0.507040931260935
+residuals:
+- scene: scene_01
+  normal_error_norm: 1.9642606211053075
+  normal_angle_deg: 158.30423424028146
+  distance_error_m: 0.41524261675408225
+- scene: scene_02
+  normal_error_norm: 0.8295250624239658
+  normal_angle_deg: 49.008725669600565
+  distance_error_m: 0.570429472473647
+- scene: scene_03
+  normal_error_norm: 0.41997423852369276
+  normal_angle_deg: 24.243194803901815
+  distance_error_m: -0.3281438665705396
+- scene: scene_04
+  normal_error_norm: 0.2616733877355896
+  normal_angle_deg: 15.035888634266602
+  distance_error_m: -0.18098190553715232
+- scene: scene_05
+  normal_error_norm: 0.6965701682803364
+  normal_angle_deg: 40.76491804241178
+  distance_error_m: -0.3822574070535149
+- scene: scene_06
+  normal_error_norm: 0.386169852536804
+  normal_angle_deg: 22.26574396337327
+  distance_error_m: -0.15205016589285952
+- scene: scene_07
+  normal_error_norm: 0.5163444703056858
+  normal_angle_deg: 29.923273282683095
+  distance_error_m: -0.3312660909466171
+- scene: scene_08
+  normal_error_norm: 0.47448966731701686
+  normal_angle_deg: 27.447970137281555
+  distance_error_m: 0.30191715991573254

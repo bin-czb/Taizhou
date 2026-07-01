@@ -1,0 +1,85 @@
+method: official_li_init
+date: 2026-06-22
+source_data:
+  ros2_bag: /home/czb/fast_livo2_validation_bags/lidar_imu_init_150hz_20260622_145550
+  ros1_bag_for_li_init: /home/czb/Tai Zhou/fast_livo2_ros2_ws/converted_bags_ros1/lidar_imu_init_150hz_20260622_145550_liinit_ros1.bag
+  lidar_topic: /livox/lidar
+  imu_topic: /imu/data
+  lidar_rate_hz: 10.0
+  imu_rate_hz: 150.0
+  duration_s: 282.620424
+message_conversion:
+  script: /home/czb/Tai Zhou/fast_livo2_ros2_ws/scripts/convert_ros2_bag_to_li_init_ros1.py
+  lidar_ros1_type: livox_ros_driver/CustomMsg
+  lidar_ros1_md5: e4d6829bdfe657cb6c21a746c86b21a6
+  imu_ros1_type: sensor_msgs/Imu
+  imu_ros1_md5: 6a62c6daae103f4ff57a132d6f95cec2
+frame_convention:
+  transform: "p_imu = R_li * p_lidar + T_li"
+  note: "LI-Init reports Homogeneous Transformation Matrix from LiDAR to IMU."
+manual_reference:
+  source: /home/czb/Tai Zhou/fast_livo2_ros2_ws/calibration/manual_lidar_imu_extrinsic.yaml
+  R_li:
+    rows: 3
+    cols: 3
+    data: [0.0, -1.0, 0.0,
+           1.0,  0.0, 0.0,
+           0.0,  0.0, 1.0]
+  T_li_m: [0.0, 0.0, 0.08]
+li_init_initialization:
+  rotation_lidar_to_imu_deg: [0.074152, 0.617381, 89.481295]
+  translation_lidar_to_imu_m: [-0.002084, 0.007526, 0.131141]
+  time_lag_imu_to_lidar_s: -0.053331
+  gyro_bias_radps: [-0.025741, 0.011227, -0.004819]
+  accel_bias_mps2: [0.009922, -0.009983, 0.010094]
+  gravity_world_mps2: [-0.399124, 0.131416, -9.800996]
+  T_lidar_imu:
+    rows: 4
+    cols: 4
+    data: [0.009167, -0.999957, 0.001393, -0.002084,
+           0.999900,  0.009182, 0.010762,  0.007526,
+          -0.010774,  0.001294, 0.999941,  0.131141,
+           0.0,       0.0,      0.0,       1.0]
+  comparison_to_manual:
+    rotation_angle_difference_deg: 0.814333
+    translation_difference_m: [-0.002084, 0.007526, 0.051141]
+    translation_difference_norm_m: 0.051734
+li_init_refinement:
+  rotation_lidar_to_imu_deg: [-0.337186, 0.418600, 90.108580]
+  translation_lidar_to_imu_m: [0.003701, 0.010579, 0.124263]
+  time_lag_imu_to_lidar_s: -0.053331
+  gyro_bias_radps: [-0.015019, -0.008438, -1.315795]
+  accel_bias_mps2: [0.003154, -0.009994, 0.012491]
+  gravity_world_mps2: [-0.409996, 0.147741, -9.799899]
+  T_lidar_imu:
+    rows: 4
+    cols: 4
+    data: [-0.001779, -0.999981, -0.005898, 0.003701,
+            0.999972, -0.001822,  0.007295, 0.010579,
+           -0.007305, -0.005884,  0.999956, 0.124263,
+            0.0,       0.0,       0.0,      1.0]
+  comparison_to_manual:
+    rotation_angle_difference_deg: 0.546569
+    translation_difference_m: [0.003701, 0.010579, 0.044263]
+    translation_difference_norm_m: 0.045660
+recommended_for_first_fast_livo2_trial:
+  source: li_init_initialization
+  reason:
+    - "Rotation is within about 0.82 deg of the manual axis convention."
+    - "Translation direction is consistent with the IMU being below the LiDAR."
+    - "Initialization gyro bias is physically more plausible than the refinement gyro bias."
+    - "Refinement extrinsic is also close, but gyro_bias_z=-1.315795 rad/s is suspicious for this IMU."
+  extrinsic_R:
+    rows: 3
+    cols: 3
+    data: [0.009167, -0.999957, 0.001393,
+           0.999900,  0.009182, 0.010762,
+          -0.010774,  0.001294, 0.999941]
+  extrinsic_T_m: [-0.002084, 0.007526, 0.131141]
+  imu_time_offset_s: -0.053331
+quality:
+  status: usable_first_pass
+  notes:
+    - "The LI-Init result is much more consistent with the mechanical axis measurement than a random or wrong-frame solution."
+    - "The 4-5 cm translation difference from manual measurement can come from measuring sensor housings instead of LiDAR/IMU internal coordinate origins."
+    - "Before formal navigation, validate this extrinsic by replaying a LiDAR-IMU bag and checking map sharpness/no ghosting."

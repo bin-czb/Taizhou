@@ -1,0 +1,33 @@
+method: manual_measurement
+date: 2026-06-21
+sensor_setup:
+  lidar: Livox Mid360
+  imu: HWT601-AGV-485
+frame_convention:
+  lidar_frame: "assumed Mid360 frame: +X forward, +Y left, +Z up"
+  imu_frame: "+Y forward, +X camera-right, +Z up by right-hand rule"
+  transform: "p_imu = R_li * p_lidar + T_li"
+  fast_livo2_parameter_names:
+    rotation: extrinsic_R
+    translation: extrinsic_T
+manual_measurement:
+  imu_position_relative_to_lidar:
+    forward_m: 0.0
+    left_m: 0.0
+    down_m: 0.08
+  notes:
+    - "IMU is mounted directly below the LiDAR by about 80 mm."
+    - "IMU +Y is aligned with the camera/lidar forward direction."
+    - "IMU +X points to the camera image/right-hand side."
+extrinsic:
+  R_li:
+    rows: 3
+    cols: 3
+    data: [0.0, -1.0, 0.0,
+           1.0,  0.0, 0.0,
+           0.0,  0.0, 1.0]
+  T_li_m: [0.0, 0.0, 0.08]
+quality:
+  status: first_pass_manual
+  intended_use: "rosbag acquisition and low-speed validation"
+  warning: "Replace with LI-Init or equivalent LiDAR-IMU calibration before formal FAST-LIVO2 localization."

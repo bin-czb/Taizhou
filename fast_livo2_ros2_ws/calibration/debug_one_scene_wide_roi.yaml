@@ -1,0 +1,61 @@
+method: multi_plane_apriltag_lidar
+transform_convention: 'LiDAR -> Camera: p_camera = Rcl * p_lidar + Pcl'
+board:
+  name: cardboard_box_tagstandard41h12_id0
+  units: m
+  tag:
+    family: tagStandard41h12
+    id: 0
+    size_m: 0.1
+  box_face:
+    width_m: 0.341
+    height_m: 0.233
+  tag_offsets:
+    left_m: 0.1225
+    right_m: 0.122
+    top_m: 0.0675
+    bottom_m: 0.065
+  consistency_check:
+    width_from_offsets_m: 0.3445
+    width_error_m: 0.0035
+    height_from_offsets_m: 0.2325
+    height_error_m: -0.0005
+  notes:
+  - Measurements provided on 2026-06-19.
+  - The width consistency error is about 3.5 mm; remeasure box width or left/right
+    offsets before final calibration if possible.
+  - LiDAR uses the box face as a plane; the tag pattern is only used by the camera.
+scenes:
+- name: scene_01
+  image_stamp: 1781957641.7712965
+  cloud_stamp: 1781957641.727887
+  camera_plane:
+    normal:
+    - 0.005125908513581789
+    - -0.18970023178906337
+    - -0.9818286750350522
+    distance: 0.7309227457207214
+    centroid:
+    - 0.0801768392444577
+    - 0.26334803620110164
+    - 0.6939872084411541
+    inliers: 4
+    total: 4
+    extent_major: 0.0
+    extent_minor: 0.0
+    score: 0.0
+  lidar_plane:
+    normal:
+    - 0.0064283277058519135
+    - 0.9999785517806887
+    - -0.0012540261171676281
+    distance: 1.4985332317413735
+    centroid:
+    - 1.5731904733748663
+    - -1.5087523721513294
+    - -0.05884761936253025
+    inliers: 105
+    total: 11626
+    extent_major: 0.7703965312860978
+    extent_minor: 0.312971914538996
+    score: 2.4038701945320717

@@ -1,0 +1,36 @@
+date: 2026-06-22
+purpose: "Current calibration summary for FAST-LIVO2-compatible raw bag recording."
+topics:
+  image: /left_camera/image
+  lidar: /livox/lidar
+  livox_builtin_imu: /livox/imu
+  imu: /imu/data
+camera_intrinsic:
+  selected_file: camera_pinhole_rgb.yaml
+  resolution: [1280, 720]
+  source: "checkerboard_20260618_190320"
+  fx: 715.799008
+  fy: 708.732198
+  cx: 647.586881
+  cy: 342.577746
+  distortion_k1_k2_p1_p2: [-0.054322996, 0.090084176, -0.004535688, 0.004554663]
+lidar_camera_extrinsic:
+  convention: "p_camera = Rcl * p_lidar + Pcl"
+  source: "manual measurement, visually checked with projection"
+  Rcl: [0.0, -1.0, 0.0,
+        0.0, 0.0, -1.0,
+        1.0, 0.0, 0.0]
+  Pcl_m: [0.0, -0.06, -0.065]
+lidar_imu_extrinsic:
+  convention: "p_imu = R_li * p_lidar + T_li"
+  rotation_source: "official LI-Init initialization result, 150 Hz IMU bag"
+  translation_source: "mechanical measurement"
+  R_li: [0.009167, -0.999957, 0.001393,
+         0.999900, 0.009182, 0.010762,
+        -0.010774, 0.001294, 0.999941]
+  T_li_m: [0.0, 0.0, 0.08]
+  note: "LI-Init translation z=0.124-0.131 m is not used because it exceeds the mechanical envelope."
+time_offset:
+  applied_imu_time_offset_s: 0.0
+  li_init_candidate_time_lag_imu_to_lidar_s: -0.053331
+  status: "candidate only; repeat LI-Init and check downstream sign convention before applying"

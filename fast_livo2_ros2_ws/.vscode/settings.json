@@ -1,0 +1,8 @@
+{
+  "C_Cpp.default.compileCommands": "${workspaceFolder}/build/compile_commands.json",
+  "clangd.arguments": [
+    "--compile-commands-dir=${workspaceFolder}/build"
+  ],
+  "cmake.sourceDirectory": "${workspaceFolder}/src/fast_livo2_ros2",
+  "ros.distro": "humble"
+}

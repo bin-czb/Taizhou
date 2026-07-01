@@ -1,0 +1,52 @@
+method: engineering_recommendation
+date: 2026-06-22
+source_results:
+  li_init: /home/czb/Tai Zhou/fast_livo2_ros2_ws/calibration/li_init_lidar_imu_result_20260622_150hz.yaml
+  manual_measurement: /home/czb/Tai Zhou/fast_livo2_ros2_ws/calibration/manual_lidar_imu_extrinsic.yaml
+frame_convention:
+  transform: "p_imu = R_li * p_lidar + T_li"
+  lidar_frame_assumption: "+X forward, +Y left, +Z up"
+  imu_frame_confirmed: "+Y forward, +X camera-right, +Z up"
+decision:
+  recommended_for_first_bag_validation:
+    rotation_source: li_init_initialization
+    translation_source: mechanical_measurement
+    time_offset_source: li_init_candidate_not_final
+  reason:
+    - "LI-Init rotation agrees with the manually observed axis relationship within about 0.8 deg."
+    - "LI-Init translation z=0.124-0.131 m is larger than the measured top-of-LiDAR to bottom-of-IMU distance of about 0.11 m, so it is not physically trusted as the final translation."
+    - "Translation is more sensitive to time offset, motion excitation, and sensor-origin uncertainty than rotation."
+    - "Use the mechanically plausible translation first, then validate by map sharpness during rosbag replay."
+recommended_extrinsic:
+  R_li:
+    rows: 3
+    cols: 3
+    data: [0.009167, -0.999957, 0.001393,
+           0.999900,  0.009182, 0.010762,
+          -0.010774,  0.001294, 0.999941]
+  T_li_m: [0.0, 0.0, 0.08]
+candidate_time_offset:
+  li_init_time_lag_imu_to_lidar_s: -0.053331
+  li_init_instruction: "Using LIO: subtract this value from IMU timestamp, or add this value to LiDAR timestamp."
+  status: "candidate_only_until_repeated_runs_confirm_stability"
+timestamp_observation_from_ros2_bag:
+  ros2_bag: /home/czb/fast_livo2_validation_bags/lidar_imu_init_150hz_20260622_145550
+  imu_header_rate_hz: 150.0
+  lidar_header_rate_hz: 10.0
+  imu_record_time_minus_header_stamp_s:
+    mean: 0.000228
+    q50: 0.000218
+    q95: 0.000270
+  lidar_record_time_minus_header_stamp_s:
+    mean: 0.105068
+    q50: 0.105119
+    q95: 0.105856
+  interpretation:
+    - "The different LiDAR/IMU rates are expected and do not by themselves mean unsynchronized data."
+    - "The LiDAR message is recorded about 105 ms after its header stamp, consistent with publishing a completed 10 Hz scan whose header stamp is near the scan start."
+    - "The IMU message is recorded almost immediately after its header stamp, suggesting host-time stamping or very low driver delay."
+    - "The fixed LI-Init lag estimate should be treated as a timing-convention/latency candidate and verified across repeated recordings."
+validation_plan:
+  - "Replay a short feature-rich LiDAR-IMU bag using the recommended extrinsic and check whether the map is sharp."
+  - "Repeat LI-Init on one or two more bags. Trust the time offset only if it stays within a few milliseconds."
+  - "If maps show motion-direction ghosting, test T_li_z values 0.08, 0.10, and 0.11 m before accepting the LI-Init 0.124-0.131 m translation."
