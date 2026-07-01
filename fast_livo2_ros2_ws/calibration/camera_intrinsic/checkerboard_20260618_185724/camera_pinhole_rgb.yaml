@@ -1,0 +1,14 @@
+fast_livo2_mapping:
+  ros__parameters:
+    cam_model: Pinhole
+    cam_width: 640
+    cam_height: 480
+    scale: 1.0
+    cam_fx: 470.3960881155439
+    cam_fy: 466.76937094238025
+    cam_cx: 321.688507223247
+    cam_cy: 241.3627172853479
+    cam_d0: -0.039706825582215347
+    cam_d1: 0.06347813896967133
+    cam_d2: 0.002692837157677103
+    cam_d3: 0.0030212673172192975
