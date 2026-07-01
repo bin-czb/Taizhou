@@ -1,0 +1,33 @@
+recording:
+  image_topic: "/left_camera/image"
+  image_type: "sensor_msgs/msg/Image"
+  lidar_topic: "/livox/lidar"
+  lidar_type: "livox_ros_driver2/msg/CustomMsg"
+  livox_imu_topic: "/livox/imu"
+  livox_imu_type: "sensor_msgs/msg/Imu"
+  imu_topic: "/imu/data"
+  imu_type: "sensor_msgs/msg/Imu"
+  expected_rates_hz:
+    image: 30.0
+    lidar: 10.0
+    livox_imu: 200.0
+    imu: 150.0
+  optional_topics:
+    - "/tf"
+    - "/tf_static"
+    - "/fastlio2/lio_odom"
+    - "/fastlio2/lio_path"
+    - "/fastlio2/body_cloud"
+    - "/fastlio2/world_cloud"
+    - "/odom"
+  default_output_root: "~/fast_livo2_validation_bags"
+
+notes:
+  - "Keep camera resolution and exposure/focus settings identical to calibration."
+  - "Prefer Livox CustomMsg so per-point offset_time is preserved in the bag."
+  - "Record /livox/imu as the Livox built-in IMU diagnostic/comparison stream when available."
+  - "Record raw sensor topics; downstream localization should be verified from the bag, not from derived placeholder outputs."
+  - "FASTLIO2 core replay needs /livox/lidar plus either /livox/imu or /imu/data."
+  - "FASTLIO2 output topics are optional and only useful when the FASTLIO2 node is running during recording."
+  - "Record /odom only when a chassis/wheel odometry source exists and odometry fusion will be debugged."
+  - "Use record_fast_livo_site_bag.sh for navigation-site data; it saves a calibration snapshot next to the bag."

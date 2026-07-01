@@ -1,0 +1,16 @@
+fast_livo2_mapping:
+  ros__parameters:
+    cam_model: "Pinhole"
+    # Calibrated with checkerboard_20260618_190320.
+    # Valid only when the camera publishes 1280x720 images.
+    cam_width: 1280
+    cam_height: 720
+    scale: 1.0
+    cam_fx: 715.799008441473
+    cam_fy: 708.73219833496
+    cam_cx: 647.5868808504542
+    cam_cy: 342.57774638549455
+    cam_d0: -0.05432299559622244
+    cam_d1: 0.0900841757390232
+    cam_d2: -0.004535687821549576
+    cam_d3: 0.004554663275012315

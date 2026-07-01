@@ -1,0 +1,31 @@
+FAST-LIVO2 validation-data recording manifest
+created_at: 2026-06-24T17:23:00+08:00
+output_bag: /home/czb/fast_livo2_validation_bags/01_raw_sensor_inputs/site_nav_20260624_172258
+image_topic: /left_camera/image
+lidar_topic: /livox/lidar
+lidar_type: livox_ros_driver2/msg/CustomMsg
+livox_imu_topic: /livox/imu
+record_livox_imu: 1
+imu_topic: /imu/data
+record_tf: 1
+record_fastlio_outputs: 0
+record_odom: 0
+odom_topic: /odom
+bag_group: 01_raw_sensor_inputs
+bag_storage: sqlite3
+bag_compression: none
+
+Expected for current rig:
+  camera: 1280x720, /left_camera/image, sensor_msgs/msg/Image
+  lidar:  Livox Mid360, /livox/lidar, livox_ros_driver2/msg/CustomMsg, about 10 Hz
+  livox_imu: Livox built-in IMU, /livox/imu, sensor_msgs/msg/Imu, diagnostic/comparison stream
+  external_imu: HWT905/HWT601-compatible RS485, /imu/data, sensor_msgs/msg/Imu, about 150 Hz
+  fastlio2_core_inputs: /livox/lidar plus /livox/imu or /imu/data
+  fastlio2_outputs_when_running: /fastlio2/lio_odom /fastlio2/lio_path /fastlio2/body_cloud /fastlio2/world_cloud
+
+Notes:
+  Record raw topics only. Do not replace /livox/lidar with PointCloud2 if the
+  downstream FAST-LIVO2 system expects Livox CustomMsg and per-point offset_time.
+  For FASTLIO2 replay/debug, raw /livox/lidar and one IMU topic are sufficient.
+  For online FASTLIO2 output inspection, set RECORD_FASTLIO_OUTPUTS=1.
+  For odom fusion/chassis comparison, set RECORD_ODOM=1 and make sure /odom exists.

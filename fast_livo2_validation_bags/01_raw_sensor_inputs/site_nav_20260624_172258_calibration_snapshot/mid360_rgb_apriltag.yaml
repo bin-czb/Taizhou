@@ -1,0 +1,51 @@
+fast_livo2_mapping:
+  ros__parameters:
+    common:
+      img_topic: "/left_camera/image"
+      lid_topic: "/livox/lidar"
+      imu_topic: "/imu/data"
+      # Preferred for Livox Mid360 because per-point offset_time is preserved.
+      lidar_msg_type: "livox_custom"
+
+    frames:
+      base_frame_id: "base_link"
+      lidar_frame_id: "livox_frame"
+      camera_frame_id: "left_camera"
+      imu_frame_id: "imu_link"
+
+    extrin_calib:
+      # LiDAR -> IMU, matching FAST-LIVO2 ImuProcess names Lid_rot_to_IMU
+      # and Lid_offset_to_IMU. Current recommendation, 2026-06-22:
+      #   rotation: official LI-Init initialization result from the 150 Hz IMU bag
+      #   translation: mechanical measurement, because LI-Init z=0.124-0.131 m
+      #                is larger than the measured top-of-LiDAR to bottom-of-IMU
+      #                distance and is not physically trusted as final translation.
+      # IMU +Y points forward with the camera/lidar, IMU +X points camera-right,
+      # and the IMU origin is treated as about 80 mm below the LiDAR origin.
+      # p_imu = extrinsic_R * p_lidar + extrinsic_T.
+      extrinsic_T: [0.0, 0.0, 0.08]
+      extrinsic_R: [0.009167, -0.999957, 0.001393,
+                    0.999900,  0.009182, 0.010762,
+                   -0.010774,  0.001294, 0.999941]
+
+      # LiDAR -> Camera: p_camera = Rcl * p_lidar + Pcl.
+      # Manual initial extrinsic, measured 2026-06-20:
+      # camera optical z is aligned with LiDAR x;
+      # camera is 65 mm in front of and 60 mm below the LiDAR origin.
+      Rcl: [0.0, -1.0,  0.0,
+            0.0,  0.0, -1.0,
+            1.0,  0.0,  0.0]
+      Pcl: [0.0, -0.06, -0.065]
+
+    time_offset:
+      # Keep zero in the raw-data recording config. LI-Init estimated
+      # imu->lidar lag = -0.053331 s once, but this must be repeated and checked
+      # against the downstream FAST-LIVO sign convention before being applied.
+      imu_time_offset: 0.0
+      img_time_offset: 0.0
+
+    preprocess:
+      # Kept as downstream FAST-LIVO2 input hints; this package does not run localization.
+      lidar_type: 1
+      scan_line: 4
+      blind: 0.8
